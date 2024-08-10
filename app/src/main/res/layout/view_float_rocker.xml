@@ -4,7 +4,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
 
-    <com.vspace.widget.RockerView
+    <com.jianjiao.bx.widget.RockerView
             android:layout_marginHorizontal="8dp"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"

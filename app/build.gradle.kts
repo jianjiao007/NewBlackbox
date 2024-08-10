@@ -44,7 +44,7 @@ android {
                     enableV4Signing = true
                 }
             }
-            resValue ("string", "app_name", "Vspace-alpha")
+            resValue ("string", "app_name", "全息空间")
             isMinifyEnabled = false // not tested yet
             isJniDebuggable = false
             isDebuggable = false
@@ -52,6 +52,7 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            signingConfig = signingConfigs.getByName("vcore")
         }
         debug {
             signingConfigs.getByName("debug"){

@@ -1,1 +1,1 @@
--keep class com.vspace.*
+-keep class com.bx.*
