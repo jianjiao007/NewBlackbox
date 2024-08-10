@@ -12,18 +12,18 @@ class App : Application() {
 
         @JvmStatic
         fun getContext(): Context {
-            return com.jianjiao.bx.app.App.Companion.mContext
+            return mContext
         }
     }
 
     override fun attachBaseContext(base: Context?) {
         super.attachBaseContext(base)
-        com.jianjiao.bx.app.App.Companion.mContext = base!!
-        com.jianjiao.bx.app.AppManager.doAttachBaseContext(base)
+        mContext = base!!
+        AppManager.doAttachBaseContext(base)
     }
 
     override fun onCreate() {
         super.onCreate()
-        com.jianjiao.bx.app.AppManager.doOnCreate()
+        AppManager.doOnCreate()
     }
 }

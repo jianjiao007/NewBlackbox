@@ -63,7 +63,7 @@ android {
             }
             isJniDebuggable = true
             isDebuggable = true
-            resValue ("string", "app_name", "Vspace-d")
+            resValue ("string", "app_name", "全息空间d")
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),

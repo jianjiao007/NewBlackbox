@@ -1,6 +1,9 @@
 package com.vcore.fake.hook;
 
 import android.text.TextUtils;
+import android.util.Log;
+
+import com.vcore.utils.MethodParameterUtils;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
@@ -8,9 +11,6 @@ import java.lang.reflect.Proxy;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
-
-import com.vcore.utils.MethodParameterUtils;
-import com.vcore.utils.Slog;
 
 public abstract class ClassInvocationStub implements InvocationHandler, IInjectHook {
     public static final String TAG = ClassInvocationStub.class.getSimpleName();
@@ -24,7 +24,8 @@ public abstract class ClassInvocationStub implements InvocationHandler, IInjectH
 
     protected abstract void inject(Object baseInvocation, Object proxyInvocation);
 
-    protected void onBindMethod() { }
+    protected void onBindMethod() {
+    }
 
     public Object getProxyInvocation() {
         return mProxyInvocation;
@@ -67,7 +68,7 @@ public abstract class ClassInvocationStub implements InvocationHandler, IInjectH
                 try {
                     addMethodHook(name, (MethodHook) clazz.newInstance());
                 } catch (Throwable t) {
-                    t.printStackTrace();
+                    Log.d(TAG, "initAnnotation: " + t);
                 }
             }
         }

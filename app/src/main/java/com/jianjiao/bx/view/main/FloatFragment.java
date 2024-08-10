@@ -24,9 +24,14 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.material.internal.TextWatcherAdapter;
+import com.hjq.permissions.Permission;
+import com.hjq.permissions.XXPermissions;
+import com.jianjiao.bx.Jianjiao;
 import com.jianjiao.bx.MyGlobalVar;
 import com.jianjiao.bx.app.AppManager;
 import com.jianjiao.bx.databinding.ActivityMyBinding;
+import com.jianjiao.bx.node.FloatingButton;
+import com.jianjiao.bx.node.FloatingWindow;
 import com.jianjiao.bx.node.utils.FileUtils;
 import com.jianjiao.bx.util.InjectionUtil;
 import com.jianjiao.bx.view.apps.AppsViewModel;
@@ -45,7 +50,11 @@ public class FloatFragment extends Fragment {
         mBinding = ActivityMyBinding.inflate(getLayoutInflater());
         return mBinding.getRoot();//inflater.inflate(R.layout.activity_my, container, false);
     }
-
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.d(TAG, "onResume: "+"重新显示");
+    }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
@@ -162,7 +171,16 @@ public class FloatFragment extends Fragment {
         initDisplay();//初始化屏幕信息
 
         if (!MyGlobalVar.devMode) {
-            getFloatPermission();//初始化悬浮窗权限
+            //getFloatPermission();//初始化悬浮窗权限
+            if(!XXPermissions.isGranted(mainActivity, Permission.SYSTEM_ALERT_WINDOW)){
+                Toast.makeText(context, "请开启悬浮窗权限", Toast.LENGTH_SHORT).show();
+                getFloatPermission();
+                return;
+            }
+            // 打开悬浮窗
+            context.startService(new Intent(context, FloatingWindow.class));
+            // 打开悬浮窗
+            context.startService(new Intent(context, FloatingButton.class));
             //初始化无障碍服务
             if (!isAccessibilityServiceOn()) {
                 printLogMsg("请开启无障碍服务", 0);

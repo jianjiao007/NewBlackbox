@@ -4,15 +4,11 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
-import android.net.Uri
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.content.edit
 import androidx.viewpager2.widget.ViewPager2
-import com.afollestad.materialdialogs.MaterialDialog
-import com.afollestad.materialdialogs.input.input
 import com.jianjiao.bx.Jianjiao
 import com.jianjiao.bx.MyBoard
 import com.jianjiao.bx.R
@@ -43,6 +39,7 @@ class MainActivity : LoadingActivity() {
         initToolbarSubTitle()
         initJianjiao()
     }
+
     private fun initJianjiao() {
         GlobalVariableHolder.context = this
         GlobalVariableHolder.mainActivity = this
@@ -58,10 +55,11 @@ class MainActivity : LoadingActivity() {
         registerReceiver(mReceiver, filter)
         Jianjiao.init()
     }
+
     private fun initToolbarSubTitle() {
         updateUserRemark(0)
 
-        viewBinding.toolbarLayout.toolbar.getChildAt(1).setOnClickListener {
+        /*viewBinding.toolbarLayout.toolbar.getChildAt(1).setOnClickListener {
             MaterialDialog(this).show {
                 title(res = R.string.userRemark)
                 input(
@@ -76,7 +74,7 @@ class MainActivity : LoadingActivity() {
                 positiveButton(res = R.string.done)
                 negativeButton(res = R.string.cancel)
             }
-        }
+        }*/
     }
 
     private fun initViewPager() {
@@ -93,7 +91,8 @@ class MainActivity : LoadingActivity() {
         viewBinding.viewPager.adapter = mViewPagerAdapter
 
         viewBinding.dotsIndicator.attachTo(viewBinding.viewPager)
-        viewBinding.viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+        viewBinding.viewPager.registerOnPageChangeCallback(object :
+            ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
                 currentUser = fragmentList[position].userID
@@ -113,6 +112,7 @@ class MainActivity : LoadingActivity() {
             apkPathResult.launch(intent)
         }
     }
+
     fun shuaxin() {
         fragmentList.clear()
         val userList = BlackBoxCore.get().users
@@ -135,6 +135,7 @@ class MainActivity : LoadingActivity() {
             }
         })
     }
+
     fun showFloatButton(show: Boolean) {
         val tranY: Float = Resolution.convertDpToPixel(120F, com.jianjiao.bx.app.App.getContext())
         val time = 200L
@@ -160,11 +161,14 @@ class MainActivity : LoadingActivity() {
     }
 
     private fun updateUserRemark(userId: Int) {
-        var remark = com.jianjiao.bx.app.AppManager.mRemarkSharedPreferences.getString("Remark$userId", "User $userId")
+        var remark = com.jianjiao.bx.app.AppManager.mRemarkSharedPreferences.getString(
+            "Remark$userId",
+            "User $userId"
+        )
         if (remark.isNullOrEmpty()) {
             remark = "User $userId"
         }
-        viewBinding.toolbarLayout.toolbar.subtitle = remark
+        viewBinding.toolbarLayout.toolbar.subtitle = ""//remark
     }
 
     private val apkPathResult =
@@ -188,19 +192,20 @@ class MainActivity : LoadingActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.main_git -> {
-                val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/alex5402/NewBlackbox"))
+            /*R.id.main_git -> {
+                val intent =
+                    Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/alex5402/NewBlackbox"))
                 startActivity(intent)
-            }
+            }*/
 
             R.id.main_setting -> {
                 SettingActivity.start(this)
             }
 
-            R.id.main_tg -> {
+            /*R.id.main_tg -> {
                 val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://t.me/"))
                 startActivity(intent)
-            }
+            }*/
 
             R.id.fake_location -> {
                 val intent = Intent(this, FakeManagerActivity::class.java)

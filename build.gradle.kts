@@ -13,7 +13,7 @@ ext.apply {
     set("googlematerial", "1.11.0") // com.google.android.material:material:
 
     // set properties for app only
-    set("appid", "com.jianjiao.bx") // appid
+    set("appid", "com.jianjiao.bx64") // appid
     set("packagename", "com.jianjiao.bx") // main packagename
     set("appversion", "3.0.1")
     set("versioncode", 3)

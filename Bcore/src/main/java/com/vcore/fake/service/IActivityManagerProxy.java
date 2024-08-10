@@ -249,7 +249,12 @@ public class IActivityManagerProxy extends ClassInvocationStub {
 
                     WeakReference<?> weakReference = LoadedApk.ServiceDispatcher.InnerConnection.mDispatcher.get(connection);
                     if (weakReference != null) {
-                        LoadedApk.ServiceDispatcher.mConnection.set(weakReference.get(), proxy);
+                        try{
+                            LoadedApk.ServiceDispatcher.mConnection.set(weakReference.get(), proxy);
+                        }catch (Exception e){
+                            Log.e(TAG, "bindIsolatedService: ", e);
+                        }
+
                     }
                 }
                 if (BuildCompat.isT()){

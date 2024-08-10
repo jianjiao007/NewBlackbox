@@ -649,7 +649,6 @@ public class Jianjiao {
                         context.startService(new Intent(context, FloatingWindow.class));
                         // 打开悬浮窗
                         context.startService(new Intent(context, FloatingButton.class));
-
                     }
 
                     @Override
