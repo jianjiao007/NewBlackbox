@@ -8,10 +8,8 @@ import android.content.pm.PackageInfo;
 import android.content.pm.ProviderInfo;
 import android.content.pm.ResolveInfo;
 import android.content.pm.ServiceInfo;
+import android.net.Uri;
 import android.os.RemoteException;
-
-import java.util.Collections;
-import java.util.List;
 
 import com.vcore.BlackBoxCore;
 import com.vcore.app.BActivityThread;
@@ -19,6 +17,9 @@ import com.vcore.core.system.ServiceManager;
 import com.vcore.core.system.pm.IBPackageManagerService;
 import com.vcore.entity.pm.InstallOption;
 import com.vcore.entity.pm.InstallResult;
+
+import java.util.Collections;
+import java.util.List;
 
 public class BPackageManager extends BlackManager<IBPackageManagerService> {
     private static final BPackageManager sPackageManager = new BPackageManager();
@@ -55,6 +56,37 @@ public class BPackageManager extends BlackManager<IBPackageManagerService> {
         Intent intent = new Intent(intentToResolve);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.setClassName(ris.get(0).activityInfo.packageName, ris.get(0).activityInfo.name);
+        return intent;
+    }
+    public Intent getpddIntent(String packageName, int userId) {
+        Uri data = Uri.parse("pinduoduo://com.xunmeng.pinduoduo/transac_virtual_card_pwd.html?ext=%7B%22feed_scene_id%22%3A666%7D&biz_type=1&scene_id=50&use_hub=1&page_from=602309&hub_type=hub%2Fzb_scene_tab%2Fweak&_ex_campaign=ddlive&pet_id=6&_p_enable_goto_app=1");
+        Intent intentToResolve = new Intent(Intent.ACTION_VIEW, data);
+        intentToResolve.setPackage(packageName);
+        List<ResolveInfo> ris = queryIntentActivities(intentToResolve,
+                0,
+                intentToResolve.resolveTypeIfNeeded(BlackBoxCore.getContext().getContentResolver()),
+                userId);
+
+        Intent intent = new Intent(intentToResolve);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.setClassName(ris.get(0).activityInfo.packageName,
+                ris.get(0).activityInfo.name);
+        return intent;
+    }
+
+    public Intent openpddIntent(String packageName, String uri) {
+        Uri data = Uri.parse(uri);
+        Intent intentToResolve = new Intent(Intent.ACTION_VIEW, data);
+        intentToResolve.setPackage(packageName);
+        List<ResolveInfo> ris = queryIntentActivities(intentToResolve,
+                0,
+                intentToResolve.resolveTypeIfNeeded(BlackBoxCore.getContext().getContentResolver()),
+                0);
+
+        Intent intent = new Intent(intentToResolve);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.setClassName(ris.get(0).activityInfo.packageName,
+                ris.get(0).activityInfo.name);
         return intent;
     }
 

@@ -5,6 +5,8 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
+import androidx.preference.PreferenceManager
+import com.jianjiao.bx.MyGlobalVar
 import com.jianjiao.bx.util.InjectionUtil
 import com.jianjiao.bx.view.list.ListViewModel
 
@@ -22,6 +24,7 @@ class WelcomeActivity : AppCompatActivity() {
     }
 
     private fun jump() {
+        MyGlobalVar.preferences = PreferenceManager.getDefaultSharedPreferences(this)
         MainActivity.start(this)
         finish()
     }

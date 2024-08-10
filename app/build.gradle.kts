@@ -155,4 +155,11 @@ dependencies {
     // Floating view
     implementation("com.imuxuan:floatingview:1.6")
 
+
+    implementation ("com.squareup.okhttp3:okhttp:3.14.7")
+    implementation ("com.squareup.okio:okio:1.17.5")
+    implementation ("com.google.code.gson:gson:2.10.1") // gson
+    implementation ("com.caoccao.javet:javet-android:3.0.0") // Android (arm, arm64, x86 and x86_64)
+    implementation ("com.github.getActivity:XXPermissions:18.3") // 权限请求框架：https://github.com/getActivity/XXPermissions
+
 }

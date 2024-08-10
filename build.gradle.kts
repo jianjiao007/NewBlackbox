@@ -2,7 +2,7 @@ ext.apply {
     // this aapplyes on every projects and dependency
     set("compileSdk", 34)
     set("targetSdk", 28)
-    set("minSdk", 23)
+    set("minSdk", 24)
     set("ndkVersion", "24.0.8215888")
     set("cmakeVersion", "3.22.1") //latest
     set("ktx_version", "1.12.0") // kotlin dependency version androidx.core:core-ktx

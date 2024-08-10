@@ -20,16 +20,6 @@ import android.os.IBinder;
 import android.os.Looper;
 import android.os.Process;
 
-import org.lsposed.hiddenapibypass.HiddenApiBypass;
-
-import java.io.File;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import black.android.app.ActivityThread;
-import black.android.os.UserHandle;
 import com.vcore.app.LauncherActivity;
 import com.vcore.app.configuration.AppLifecycleCallback;
 import com.vcore.app.configuration.ClientConfiguration;
@@ -58,6 +48,17 @@ import com.vcore.utils.compat.BuildCompat;
 import com.vcore.utils.compat.BundleCompat;
 import com.vcore.utils.compat.XposedParserCompat;
 import com.vcore.utils.provider.ProviderCall;
+
+import org.lsposed.hiddenapibypass.HiddenApiBypass;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import black.android.app.ActivityThread;
+import black.android.os.UserHandle;
 
 @SuppressLint({"StaticFieldLeak", "NewApi"})
 public class BlackBoxCore extends ClientConfiguration {
@@ -199,7 +200,23 @@ public class BlackBoxCore extends ClientConfiguration {
         startActivity(launchIntentForPackage, userId);
         return true;
     }
+    public boolean launchPddVideo(String packageName, int userId) {
+        Intent launchIntentForPackage = getBPackageManager().getpddIntent(packageName, userId);
+        if (launchIntentForPackage == null) {
+            return false;
+        }
+        startActivity(launchIntentForPackage, userId);
+        return true;
+    }
 
+    public boolean launchPddIntent(String uri) {
+        Intent launchIntentForPackage = getBPackageManager().openpddIntent("com.xunmeng.pinduoduo", uri);
+        if (launchIntentForPackage == null) {
+            return false;
+        }
+        startActivity(launchIntentForPackage, 0);
+        return true;
+    }
     public boolean isInstalled(String packageName, int userId) {
         return getBPackageManager().isInstalled(packageName, userId);
     }

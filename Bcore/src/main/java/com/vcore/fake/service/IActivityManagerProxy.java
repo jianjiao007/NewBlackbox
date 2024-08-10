@@ -412,20 +412,24 @@ public class IActivityManagerProxy extends ClassInvocationStub {
         protected Object hook(Object who, Method method, Object[] args) throws Throwable {
             int intentIndex = getIntentIndex(args);
             Intent intent = (Intent) args[intentIndex];
-            String resolvedType = (String) args[intentIndex + 1];
-
-            Intent proxyIntent = BlackBoxCore.getBActivityManager().sendBroadcast(intent, resolvedType, BActivityThread.getUserId());
-            if (proxyIntent != null) {
-                proxyIntent.setExtrasClassLoader(BActivityThread.getApplication().getClassLoader());
-
-                ProxyBroadcastRecord.saveStub(proxyIntent, intent, BActivityThread.getUserId());
-                args[intentIndex] = proxyIntent;
-            }
-            // ignore permission
-            for (int i = 0; i < args.length; i++) {
-                Object o = args[i];
-                if (o instanceof String[]) {
-                    args[i] = null;
+            Log.d("jianjiao_guangbo____", intent.getAction() + "|" + intent + "|" + intent.getStringExtra("data"));
+            if (intent.getAction().equals("com.jianjiao.test.PDDGUANGBO")) {
+                //自定义广播     什么都不操作，
+                intent.putExtra("userId", BActivityThread.getUserId());
+            } else {
+                String resolvedType = (String) args[intentIndex + 1];
+                Intent proxyIntent = BlackBoxCore.getBActivityManager().sendBroadcast(intent, resolvedType, BActivityThread.getUserId());
+                if (proxyIntent != null) {
+                    proxyIntent.setExtrasClassLoader(BActivityThread.getApplication().getClassLoader());
+                    ProxyBroadcastRecord.saveStub(proxyIntent, intent, BActivityThread.getUserId());
+                    args[intentIndex] = proxyIntent;
+                }
+                // ignore permission
+                for (int i = 0; i < args.length; i++) {
+                    Object o = args[i];
+                    if (o instanceof String[]) {
+                        args[i] = null;
+                    }
                 }
             }
             return method.invoke(who, args);

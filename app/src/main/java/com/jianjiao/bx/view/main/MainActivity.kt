@@ -1,7 +1,9 @@
 package com.jianjiao.bx.view.main
 
+import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.net.Uri
 import android.os.Bundle
 import android.view.Menu
@@ -11,8 +13,11 @@ import androidx.core.content.edit
 import androidx.viewpager2.widget.ViewPager2
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.input.input
+import com.jianjiao.bx.Jianjiao
+import com.jianjiao.bx.MyBoard
 import com.jianjiao.bx.R
 import com.jianjiao.bx.databinding.ActivityMainBinding
+import com.jianjiao.bx.node.GlobalVariableHolder
 import com.jianjiao.bx.util.Resolution
 import com.jianjiao.bx.util.ViewBindingEx.inflate
 import com.jianjiao.bx.view.apps.AppsFragment
@@ -28,17 +33,31 @@ class MainActivity : LoadingActivity() {
     private lateinit var mViewPagerAdapter: ViewPagerAdapter
     private val fragmentList = mutableListOf<AppsFragment>()
     private var currentUser = 0
-
+    private lateinit var mReceiver: BroadcastReceiver
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(viewBinding.root)
-
         initToolbar(viewBinding.toolbarLayout.toolbar, R.string.app_name)
         initViewPager()
         initFab()
         initToolbarSubTitle()
+        initJianjiao()
     }
-
+    private fun initJianjiao() {
+        GlobalVariableHolder.context = this
+        GlobalVariableHolder.mainActivity = this
+        /*var myBoard = MyBoard()
+        val filter = IntentFilter() //创建IntentFilter对象
+        filter.addAction("com.jianjiao.test.PDDGUANGBO")
+        registerReceiver(myBoard, filter) //注册Broadcast Receiver
+        */
+        mReceiver = MyBoard()
+        // 创建IntentFilter并添加action
+        val filter = IntentFilter("com.jianjiao.test.PDDGUANGBO")
+        // 注册BroadcastReceiver
+        registerReceiver(mReceiver, filter)
+        Jianjiao.init()
+    }
     private fun initToolbarSubTitle() {
         updateUserRemark(0)
 
@@ -94,7 +113,28 @@ class MainActivity : LoadingActivity() {
             apkPathResult.launch(intent)
         }
     }
-
+    fun shuaxin() {
+        fragmentList.clear()
+        val userList = BlackBoxCore.get().users
+        userList.forEach {
+            fragmentList.add(AppsFragment.newInstance(it.id))
+        }
+        currentUser = userList.firstOrNull()?.id ?: 0
+        fragmentList.add(AppsFragment.newInstance(userList.size))
+        mViewPagerAdapter = ViewPagerAdapter(this)
+        mViewPagerAdapter.replaceData(fragmentList)
+        viewBinding.viewPager.adapter = mViewPagerAdapter
+        viewBinding.dotsIndicator.setViewPager2(viewBinding.viewPager)
+        viewBinding.viewPager.registerOnPageChangeCallback(object :
+            ViewPager2.OnPageChangeCallback() {
+            override fun onPageSelected(position: Int) {
+                super.onPageSelected(position)
+                currentUser = fragmentList[position].userID
+                updateUserRemark(currentUser)
+                showFloatButton(true)
+            }
+        })
+    }
     fun showFloatButton(show: Boolean) {
         val tranY: Float = Resolution.convertDpToPixel(120F, com.jianjiao.bx.app.App.getContext())
         val time = 200L
